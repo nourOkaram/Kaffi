@@ -15,7 +15,7 @@
             "name": "(Linux) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/testbed.exe",
+            "program": "${workspaceFolder}/bin/testbed",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/bin/",

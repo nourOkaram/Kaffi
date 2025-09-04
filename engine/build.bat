@@ -4,7 +4,7 @@ REM Build script for engine
 SetLocal EnableDelayedExpansion
 
 REM --- Check required environment variables using FOR loop ---
-FOR %%V IN (WORKSPACE BIN_DIR) DO (
+FOR %%V IN (WORKSPACE BIN_DIR VULKAN_SDK) DO (
     IF "!%%V!"=="" (
         ECHO [ERROR]: %%V not defined. Please set %%V environment variable before building!
         EXIT /B 1

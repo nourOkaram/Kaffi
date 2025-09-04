@@ -4,7 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/engine/src/**",
-                "${VULKAN_SDK}/Include"
+                "${VULKAN_SDK}/include"
             ],
             "defines": [
                 "_DEBUG",
