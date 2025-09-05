@@ -1,5 +1,13 @@
 #pragma once
 
+/**
+ * @file defines.h
+ * @brief Engine-wide type definitions, macros, and platform detection.
+ * 
+ * This header provides the fundamental definitions and macros used throughout
+ * the engine. It should be included in most engine source files.
+ */
+
 // Unsigned int types
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -20,12 +28,22 @@ typedef double f64;
 typedef int b32;
 typedef char b8;
 
+/**
+ * @brief Macro for static assertions across different compilers.
+ *
+ * Uses _Static_assert for GCC and Clang, and static_assert for other compilers
+ * (e.g., MSVC) to ensure compile-time checks in a compiler-agnostic way.
+ */
+
 // Properly define static assertions
-#if defined(__clang__) || defined(__gcc__)
+#if defined(__clang__) || defined(__GNUC__)
     #define STATIC_ASSERT _Static_assert
 #else
     #define STATIC_ASSERT static_assert
 #endif
+
+// At compile time, verify that our custom types have the expected sizes.
+// This is essential for serialization, memory management, and cross-platform consistency.
 
 STATIC_ASSERT(sizeof(u8) == 1, "Expected u8 to be 1 byte");
 STATIC_ASSERT(sizeof(u16) == 2, "Expected u16 to be 2 byte");
@@ -44,7 +62,8 @@ STATIC_ASSERT(sizeof(f64) == 8, "Expected f64 to be 8 byte");
 #define FALSE 0
 
 // Platform detection
-
+// This section detects the target platform at compile-time 
+// and defines a macro accordingly.
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
     // Windows OS
     #define KPLATFORM_WINDOWS 1
@@ -88,6 +107,25 @@ STATIC_ASSERT(sizeof(f64) == 8, "Expected f64 to be 8 byte");
 #else
     #error "Unknown platform!"
 #endif
+
+/**
+ * @brief KAPI (Kaffi API) macro for controlling library symbol visibility.
+ *
+ * This macro ensures that functions and variables are correctly exported or imported
+ * depending on whether the library is being built or consumed.
+ *
+ * Usage:
+ * - When building the library (KEXPORT is defined):
+ *   - Windows (MSVC/Clang): expands to __declspec(dllexport)
+ *   - Linux/macOS (GCC/Clang): expands to __attribute__((visibility("default")))
+ *
+ * - When consuming the library (KEXPORT is NOT defined):
+ *   - Windows (MSVC/Clang): expands to __declspec(dllimport)
+ *   - Linux/macOS (GCC/Clang): expands to nothing (default visibility is sufficient)
+ *
+ * This approach allows the same header to be safely included both during library
+ * compilation and by client applications.
+ */
 
 #ifdef KEXPORT
 // EXPORTs

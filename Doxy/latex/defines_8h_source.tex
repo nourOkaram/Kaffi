@@ -1,0 +1,116 @@
+\doxysection{defines.\+h}
+\hypertarget{defines_8h_source}{}\label{defines_8h_source}\index{engine/src/defines.h@{engine/src/defines.h}}
+\mbox{\hyperlink{defines_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ Unsigned\ int\ types}}
+\DoxyCodeLine{00012\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ u8;}
+\DoxyCodeLine{00013\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ u16;}
+\DoxyCodeLine{00014\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ u32;}
+\DoxyCodeLine{00015\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ u64;}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ Signed\ int\ type}}
+\DoxyCodeLine{00018\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{signed}\ \textcolor{keywordtype}{char}\ i8;}
+\DoxyCodeLine{00019\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{signed}\ \textcolor{keywordtype}{short}\ i16;}
+\DoxyCodeLine{00020\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{signed}\ \textcolor{keywordtype}{int}\ i32;}
+\DoxyCodeLine{00021\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{signed}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ i64;}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ Floating\ Point\ Types}}
+\DoxyCodeLine{00024\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{float}\ f32;}
+\DoxyCodeLine{00025\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{double}\ f64;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ Boolean\ types}}
+\DoxyCodeLine{00028\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{int}\ b32;}
+\DoxyCodeLine{00029\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{char}\ b8;}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ Properly\ define\ static\ assertions}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#if\ defined(\_\_clang\_\_)\ ||\ defined(\_\_GNUC\_\_)}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\ \ \ \ \#define\ STATIC\_ASSERT\ \_Static\_assert}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\ \ \ \ \#define\ STATIC\_ASSERT\ static\_assert}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ At\ compile\ time,\ verify\ that\ our\ custom\ types\ have\ the\ expected\ sizes.}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ This\ is\ essential\ for\ serialization,\ memory\ management,\ and\ cross-\/platform\ consistency.}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \mbox{\hyperlink{defines_8h_a24df254ec81fc13256ad54cfe955d229}{STATIC\_ASSERT}}(\textcolor{keyword}{sizeof}(u8)\ ==\ 1,\ \textcolor{stringliteral}{"{}Expected\ u8\ to\ be\ 1\ byte"{}});}
+\DoxyCodeLine{00049\ \mbox{\hyperlink{defines_8h_a24df254ec81fc13256ad54cfe955d229}{STATIC\_ASSERT}}(\textcolor{keyword}{sizeof}(u16)\ ==\ 2,\ \textcolor{stringliteral}{"{}Expected\ u16\ to\ be\ 2\ byte"{}});}
+\DoxyCodeLine{00050\ \mbox{\hyperlink{defines_8h_a24df254ec81fc13256ad54cfe955d229}{STATIC\_ASSERT}}(\textcolor{keyword}{sizeof}(u32)\ ==\ 4,\ \textcolor{stringliteral}{"{}Expected\ u32\ to\ be\ 4\ byte"{}});}
+\DoxyCodeLine{00051\ \mbox{\hyperlink{defines_8h_a24df254ec81fc13256ad54cfe955d229}{STATIC\_ASSERT}}(\textcolor{keyword}{sizeof}(u64)\ ==\ 8,\ \textcolor{stringliteral}{"{}Expected\ u64\ to\ be\ 8\ byte"{}});}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \mbox{\hyperlink{defines_8h_a24df254ec81fc13256ad54cfe955d229}{STATIC\_ASSERT}}(\textcolor{keyword}{sizeof}(i8)\ ==\ 1,\ \textcolor{stringliteral}{"{}Expected\ i8\ to\ be\ 1\ byte"{}});}
+\DoxyCodeLine{00054\ \mbox{\hyperlink{defines_8h_a24df254ec81fc13256ad54cfe955d229}{STATIC\_ASSERT}}(\textcolor{keyword}{sizeof}(i16)\ ==\ 2,\ \textcolor{stringliteral}{"{}Expected\ i16\ to\ be\ 2\ byte"{}});}
+\DoxyCodeLine{00055\ \mbox{\hyperlink{defines_8h_a24df254ec81fc13256ad54cfe955d229}{STATIC\_ASSERT}}(\textcolor{keyword}{sizeof}(i32)\ ==\ 4,\ \textcolor{stringliteral}{"{}Expected\ i32\ to\ be\ 4\ byte"{}});}
+\DoxyCodeLine{00056\ \mbox{\hyperlink{defines_8h_a24df254ec81fc13256ad54cfe955d229}{STATIC\_ASSERT}}(\textcolor{keyword}{sizeof}(i64)\ ==\ 8,\ \textcolor{stringliteral}{"{}Expected\ i64\ to\ be\ 8\ byte"{}});}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \mbox{\hyperlink{defines_8h_a24df254ec81fc13256ad54cfe955d229}{STATIC\_ASSERT}}(\textcolor{keyword}{sizeof}(f32)\ ==\ 4,\ \textcolor{stringliteral}{"{}Expected\ f32\ to\ be\ 4\ byte"{}});}
+\DoxyCodeLine{00059\ \mbox{\hyperlink{defines_8h_a24df254ec81fc13256ad54cfe955d229}{STATIC\_ASSERT}}(\textcolor{keyword}{sizeof}(f64)\ ==\ 8,\ \textcolor{stringliteral}{"{}Expected\ f64\ to\ be\ 8\ byte"{}});}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#define\ TRUE\ 1}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#define\ FALSE\ 0}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ Platform\ detection}}
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ This\ section\ detects\ the\ target\ platform\ at\ compile-\/time\ }}
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ and\ defines\ a\ macro\ accordingly.}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#if\ defined(WIN32)\ ||\ defined(\_WIN32)\ ||\ defined(\_\_WIN32\_\_)}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{comment}{//\ Windows\ OS}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\ \ \ \ \#define\ KPLATFORM\_WINDOWS\ 1}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ \_WIN64}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#error\ "{}64-\/bit\ is\ required\ on\ Windows!"{}}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#elif\ defined(\_\_linux\_\_)\ ||\ defined(\_\_gnu\_linux\_\_)}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{comment}{//\ Linux\ OS}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\ \ \ \ \#define\ KPLATFORM\_LINUX\ 1}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\ \ \ \ \#if\ defined(\_\_ANDROID\_\_)}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#define\ KPLATFORM\_ANDROID\ 1}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#elif\ defined(\_\_unix\_\_)}}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{comment}{//\ Catch\ anything\ not\ caught\ by\ the\ above}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\ \ \ \ \#define\ KPLATFORM\_UNIX\ 1}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#elif\ defined(\_POSIX\_VERSION)}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{comment}{//\ POSIX-\/compliant\ system}}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\ \ \ \ \#define\ KPLATFORM\_POSIX\ 1}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#elif\ defined(\_\_APPLE\_\_)}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{comment}{//\ Apple\ platforms}}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\ \ \ \ \#define\ KPLATFORM\_APPLE\ 1}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\ \ \ \ \#include\ <TargetConditionals.h>}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\ \ \ \ \#if\ TARGET\_IPHONE\_SIMULATOR}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ iOS\ Simulator}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#define\ KPLATFORM\_IOS\ 1}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#define\ KPLATFORM\_IOS\_SIMULATOR\ 1}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\ \ \ \ \#elif\ TARGET\_OS\_IPHONE}}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ iOS\ device}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#define\ KPLATFORM\_IOS\ 1}}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\ \ \ \ \#elif\ TARGET\_OS\_MAC}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Other\ kinds\ of\ Mac\ OS}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\ \ \ \ \#else}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#error\ "{}Unknown\ Apple\ platform"{}}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\ \ \ \ \#error\ "{}Unknown\ platform!"{}}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#ifdef\ KEXPORT}}
+\DoxyCodeLine{00131\ \textcolor{comment}{//\ EXPORTs}}
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\ \ \ \ \#ifdef\ \_MSC\_VER}}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#define\ KAPI\ \_\_declspec(dllexport)}}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\ \ \ \ \#else}}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#define\ KAPI\ \_\_attribute\_\_((visibility("{}default"{})))}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00138\ \textcolor{comment}{//\ Imports}}
+\DoxyCodeLine{00139\ \textcolor{preprocessor}{\ \ \ \ \#ifdef\ \_MSC\_VER}}
+\DoxyCodeLine{00140\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#define\ KAPI\ \_\_declspec(dllimport)}}
+\DoxyCodeLine{00141\ \textcolor{preprocessor}{\ \ \ \ \#else}}
+\DoxyCodeLine{00142\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#define\ KAPI}}
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

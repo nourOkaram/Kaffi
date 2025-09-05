@@ -1,0 +1,39 @@
+\doxysection{engine/src/test.c File Reference}
+\hypertarget{test_8c}{}\label{test_8c}\index{engine/src/test.c@{engine/src/test.c}}
+
+
+This file implements the test functions declared in \doxylink{test_8h}{test.\+h}. It serves as a basic implementation to verify the engine\textquotesingle{}s build process.  
+
+
+{\ttfamily \#include "{}test.\+h"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{test_8c_a59707e966f756b5c3878f56951a06af8}{print\+\_\+int}} (i32 i)
+\begin{DoxyCompactList}\small\item\em Simple test function exported from the engine library. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file implements the test functions declared in \doxylink{test_8h}{test.\+h}. It serves as a basic implementation to verify the engine\textquotesingle{}s build process. 
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{test_8c_a59707e966f756b5c3878f56951a06af8}\label{test_8c_a59707e966f756b5c3878f56951a06af8} 
+\index{test.c@{test.c}!print\_int@{print\_int}}
+\index{print\_int@{print\_int}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{print\_int()}{print\_int()}}
+{\footnotesize\ttfamily void print\+\_\+int (\begin{DoxyParamCaption}\item[{i32}]{i }\end{DoxyParamCaption})}
+
+
+
+Simple test function exported from the engine library. 
+
+This function verifies that the KAPI export/import mechanism works correctly. The testbed application calls this function to ensure it can successfully link to and invoke functions within the engine DLL/shared object. The function prints the provided integer to the console.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & A signed 32-\/bit integer to print to the console. \\
+\hline
+\end{DoxyParams}

@@ -1,20 +1,40 @@
 @ECHO OFF
-REM Build Everything
+REM Master build script for the entire project on Windows.
+REM This script orchestrates the build process by calling the individual
+REM build scripts for each component in the correct order.
 
 ECHO Building everything...
 
+REM Define a space-separated list of components (assemblies) to build.
+REM The order is critical: 'engine' must be built before 'testbed' because
+REM testbed depends on the library file (engine.lib) created by the engine build.
 SET assemblies=engine testbed
+
+REM Enable delayed expansion to correctly read the ERRORLEVEL variable inside the loop.
 SETLOCAL ENABLEDELAYEDEXPANSION
 
+REM Loop through each assembly defined in the 'assemblies' variable.
 FOR %%F IN (%assemblies%) DO (
+
+    REM Temporarily change the current directory to the assembly's folder (e.g., 'engine').
     PUSHD %%F
+
+    REM Execute the build script located in that directory.
     CALL build.bat
+
+    REM Return to the previous directory.
     POPD
 
+    REM Check the exit code of the last command (build.bat).
+    REM A non-zero ERRORLEVEL indicates that the build failed.
     IF !ERRORLEVEL! NEQ 0 (
-        ECHO [ERROR]: !ERRORLEVEL!
+        ECHO [ERROR]: Build failed in '%%F' with error code: !ERRORLEVEL!
+        ECHO Halting the build process.
+
+        REM Exit the entire script, passing the error code up.
         EXIT /B !ERRORLEVEL!
     )
 )
 
-ECHO ALL assemblies built successfully
+REM If the loop completes without any errors, all components were built successfully.
+ECHO ALL assemblies built successfully.
