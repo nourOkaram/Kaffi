@@ -2,6 +2,21 @@
 REM Master build script for the entire project on Windows.
 REM This script orchestrates the build process by calling the individual
 REM build scripts for each component in the correct order.
+REM This file MUST be located inside the workspace directory.
+
+REM Define WORKSPACE if not already defined
+IF NOT DEFINED WORKSPACE (
+    SET "WORKSPACE=%~dp0"
+    REM Remove trailing backslash if present using CALL
+    CALL IF "%%WORKSPACE:~-1%%"=="\" (
+        CALL SET "WORKSPACE=%%WORKSPACE:~0,-1%%"
+    )
+)
+
+IF NOT DEFINED BIN_DIR SET "BIN_DIR=%WORKSPACE%\bin"
+
+CD /D "%WORKSPACE%"
+
 
 ECHO Building everything...
 

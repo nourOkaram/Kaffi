@@ -2,6 +2,24 @@
 # Master build script for the entire project on Linux.
 # This script orchestrates the build process by calling the individual
 # build scripts for each component in the correct order.
+# This file MUST be located inside the workspace directory.
+
+if [ -z "$WORKSPACE" ]; then
+    WORKSPACE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    # Remove trailing slash if present
+    if [ "${WORKSPACE: -1}" = "/" ]; then
+        WORKSPACE="${WORKSPACE%/}"
+    fi
+fi
+
+if [ -z "$BIN_DIR" ]; then
+    BIN_DIR="$WORKSPACE/bin"
+fi
+
+cd "$WORKSPACE" || {
+    echo "[ERROR]: Failed to cd into WORKSPACE: $WORKSPACE"
+    exit 1
+}
 
 echo "Building everything..."
 
