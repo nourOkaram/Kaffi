@@ -62,7 +62,26 @@
         "defines.h": "c",
         "atomic": "c",
         "functional": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "system_error": "cpp",
+        "array": "c",
+        "utility": "c",
+        "xutility": "c",
+        "compare": "c",
+        "memory": "c",
+        "tuple": "c",
+        "xmemory": "c",
+        "xtr1common": "c",
+        "logger.h": "c",
+        "assert.h": "c",
+        "assets.h": "c",
+        "stdarg.h": "c",
+        "string.h": "c",
+        "asserts.h": "c",
+        "exception": "c",
+        "intrin.h": "c",
+        "xlocale": "c",
+        "xlocmon": "c"
     },
 
     // Windows

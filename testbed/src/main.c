@@ -3,15 +3,14 @@
  * @brief Main entry point for the testbed application.
  *
  * This application acts as a test client for the engine library.
- * It links against the engine's shared library and calls its exported functions
- * to verify that the build process, linking, and function exports/imports
- * are working correctly.
+ * It initializes the necessary systems (like logging), runs test code,
+ * and then shuts down the systems. This verifies that the build process,
+ * linking, and function exports/imports are working correctly.
+ * @copyright Copyright (c) 2025
  */
 
-// Include the engine's public header, which declares the functions we want to test,
-// such as print_int. The testbed's build script sets an include path to the engine's
-// 'src' directory, allowing the compiler to locate this header file.
-#include <test.h>
+#include <core/logger.h>
+#include <core/asserts.h>
 
 /**
  * @brief The main entry point of the application.
@@ -20,8 +19,15 @@
  */
 int main(void)
 {
-    // Call an engine function to test dynamic linking.
-    print_int(42);
+    KFATAL("A test message: %f", 3.14f);
+    KERROR("A test message: %f", 3.14f);
+    KWARN("A test message: %f", 3.14f);
+    KINFO("A test message: %f", 3.14f);
+    KDEBUG("A test message: %f", 3.14f);
+    KTRACE("A test message: %f", 3.14f);
+
+    // Test the assertion system.
+    KASSERT(FALSE);
 
     // Return 0 to indicate success
     return 0;

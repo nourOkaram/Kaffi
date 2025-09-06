@@ -3,30 +3,57 @@
 /**
  * @file defines.h
  * @brief Engine-wide type definitions, macros, and platform detection.
- * 
  * This header provides the fundamental definitions and macros used throughout
  * the engine. It should be included in most engine source files.
+ * @copyright Copyright (c) 2025
  */
 
-// Unsigned int types
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
-typedef unsigned long long u64;
+/**
+ * @name Fixed-width Unsigned Integer Types
+ * @brief Standardized unsigned integer types with guaranteed sizes.
+ * @{
+ */
+typedef unsigned char u8;       /**< 8-bit unsigned integer. */
+typedef unsigned short u16;     /**< 16-bit unsigned integer. */
+typedef unsigned int u32;       /**< 32-bit unsigned integer. */
+typedef unsigned long long u64; /**< 64-bit unsigned integer. */
+/** @} */
 
-// Signed int type
-typedef signed char i8;
-typedef signed short i16;
-typedef signed int i32;
-typedef signed long long i64;
+/**
+ * @name Fixed-width Signed Integer Types
+ * @brief Standardized signed integer types with guaranteed sizes.
+ * @{
+ */
+typedef signed char i8;         /**< 8-bit signed integer. */
+typedef signed short i16;       /**< 16-bit signed integer. */
+typedef signed int i32;         /**< 32-bit signed integer. */
+typedef signed long long i64;   /**< 64-bit signed integer. */
+/** @} */
 
-// Floating Point Types
-typedef float f32;
-typedef double f64;
 
-// Boolean types
-typedef int b32;
-typedef char b8;
+
+/**
+ * @name Floating-Point Types
+ * @brief Standardized floating-point types guaranteed sizes.
+ * @{
+ */
+typedef float f32;              /**< 32-bit floating-point number. */
+typedef double f64;             /**< 64-bit floating-point number. */
+/** @} */
+
+
+
+
+/**
+ * @name Boolean Types
+ * @brief Standardized boolean types.
+ * @{
+ */
+typedef int b32;                /**< 32-bit boolean type. */
+typedef char b8;                /**< 8-bit boolean type. */
+/** @} */
+
+
 
 /**
  * @brief Macro for static assertions across different compilers.
@@ -34,17 +61,15 @@ typedef char b8;
  * Uses _Static_assert for GCC and Clang, and static_assert for other compilers
  * (e.g., MSVC) to ensure compile-time checks in a compiler-agnostic way.
  */
-
-// Properly define static assertions
 #if defined(__clang__) || defined(__GNUC__)
     #define STATIC_ASSERT _Static_assert
 #else
     #define STATIC_ASSERT static_assert
 #endif
 
+
 // At compile time, verify that our custom types have the expected sizes.
 // This is essential for serialization, memory management, and cross-platform consistency.
-
 STATIC_ASSERT(sizeof(u8) == 1, "Expected u8 to be 1 byte");
 STATIC_ASSERT(sizeof(u16) == 2, "Expected u16 to be 2 byte");
 STATIC_ASSERT(sizeof(u32) == 4, "Expected u32 to be 4 byte");
@@ -58,46 +83,70 @@ STATIC_ASSERT(sizeof(i64) == 8, "Expected i64 to be 8 byte");
 STATIC_ASSERT(sizeof(f32) == 4, "Expected f32 to be 4 byte");
 STATIC_ASSERT(sizeof(f64) == 8, "Expected f64 to be 8 byte");
 
-#define TRUE 1
-#define FALSE 0
+/**
+ * @name Standard Boolean Values
+ * @brief Macros representing true and false.
+ * @{
+ */
+#define TRUE 1  /**< Represents a true value. */
+#define FALSE 0 /**< Represents a false value. */
+/** @} */
 
-// Platform detection
-// This section detects the target platform at compile-time 
-// and defines a macro accordingly.
+/**
+ * @name Platform Detection
+ * @brief Detects the target platform at compile-time and defines a macro accordingly.
+ * @{
+ */
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
-    // Windows OS
+
+    /** @brief Defined as 1 when the target platform is Windows. */
     #define KPLATFORM_WINDOWS 1
+    
     #ifndef _WIN64
         #error "64-bit is required on Windows!"
     #endif
 
 #elif defined(__linux__) || defined(__gnu_linux__)
-    // Linux OS
+
+    /** @brief Defined as 1 when the target platform is Linux. */
     #define KPLATFORM_LINUX 1
+
     #if defined(__ANDROID__)
+
+        /** @brief Defined as 1 when the target platform is Android. */
         #define KPLATFORM_ANDROID 1
+
     #endif
 
 #elif defined(__unix__)
-    // Catch anything not caught by the above
+
+    /** @brief Defined as 1 for other Unix-like systems. */
     #define KPLATFORM_UNIX 1
 
 #elif defined(_POSIX_VERSION)
-    // POSIX-compliant system
+    
+    /** @brief Defined as 1 for POSIX-compliant systems. */
     #define KPLATFORM_POSIX 1
 
 #elif defined(__APPLE__)
-    // Apple platforms
+   
+    /** @brief Defined as 1 when the target platform is an Apple device (macOS, iOS). */
     #define KPLATFORM_APPLE 1
     #include <TargetConditionals.h>
 
     #if TARGET_IPHONE_SIMULATOR
-        // iOS Simulator
+        
+        /** @brief Defined as 1 when the target is an iOS device. */
         #define KPLATFORM_IOS 1
+
+        /** @brief Defined as 1 when the target is the iOS Simulator. */
         #define KPLATFORM_IOS_SIMULATOR 1
+
     #elif TARGET_OS_IPHONE
-        // iOS device
+
+        /** @brief Defined as 1 when the target is an iOS device. */
         #define KPLATFORM_IOS 1
+
     #elif TARGET_OS_MAC
         // Other kinds of Mac OS
     #else
@@ -107,28 +156,24 @@ STATIC_ASSERT(sizeof(f64) == 8, "Expected f64 to be 8 byte");
 #else
     #error "Unknown platform!"
 #endif
+/** @} */
+
 
 /**
- * @brief KAPI (Kaffi API) macro for controlling library symbol visibility.
+ * @brief Controls library symbol visibility for importing/exporting.
  *
- * This macro ensures that functions and variables are correctly exported or imported
- * depending on whether the library is being built or consumed.
+ * This macro ensures that functions and variables are correctly exported
+ * when building the engine as a shared library and imported when consumed by
+ * an external application.
  *
- * Usage:
- * - When building the library (KEXPORT is defined):
- *   - Windows (MSVC/Clang): expands to __declspec(dllexport)
- *   - Linux/macOS (GCC/Clang): expands to __attribute__((visibility("default")))
- *
- * - When consuming the library (KEXPORT is NOT defined):
- *   - Windows (MSVC/Clang): expands to __declspec(dllimport)
- *   - Linux/macOS (GCC/Clang): expands to nothing (default visibility is sufficient)
- *
- * This approach allows the same header to be safely included both during library
- * compilation and by client applications.
+ * - When building the library (KEXPORT is defined), this expands to
+ * __declspec(dllexport) on Windows or __attribute__((visibility("default")))
+ * on GCC/Clang.
+ * - When consuming the library, this expands to __declspec(dllimport) on
+ * Windows and nothing on other platforms.
  */
-
 #ifdef KEXPORT
-// EXPORTs
+// Exports
     #ifdef _MSC_VER
         #define KAPI __declspec(dllexport)
     #else
