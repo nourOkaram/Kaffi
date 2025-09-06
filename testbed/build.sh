@@ -53,13 +53,14 @@ includeFlags="-Isrc -I$WORKSPACE/engine/src"
 # -I$WORKSPACE/engine/src         : Search for the engine's public headers (like test.h).
 
 # Libraries and their directories for the linker.
-linkerFlags="-L$BIN_DIR -lengine -Wl,-rpath,."
+linkerFlags="-L$BIN_DIR -lengine -Wl,-rpath,\$ORIGIN"
 # -lengine                : Link against the 'engine' library (looks for libengine.so).
 # -L"${BIN_DIR}"          : Add the binary output directory (where libengine.so is located)
 #                           to the linker's search paths.
-# -Wl,-rpath,.            : CRITICAL! Embeds a runtime search path in the executable. '.'
-#                           is a special path that tells the dynamic linker to look for shared
-#                           libraries in the same directory as the executable itself.
+# -Wl,-rpath,\$ORIGIN     : CRITICAL! Embeds a runtime search path in the executable.
+#                           '$ORIGIN' is a special placeholder that tells the dynamic linker
+#                           to look for shared libraries in the same directory as the executable
+#                           itself at runtime.
 
 # Preprocessor definitions to pass to the compiler.
 defines="-D_DEBUG -DKIXPORT"
