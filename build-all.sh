@@ -16,10 +16,7 @@ if [ -z "$BIN_DIR" ]; then
     BIN_DIR="$WORKSPACE/bin"
 fi
 
-cd "$WORKSPACE" || {
-    echo "[ERROR]: Failed to cd into WORKSPACE: $WORKSPACE"
-    exit 1
-}
+cd "$WORKSPACE"
 
 echo "Building everything..."
 

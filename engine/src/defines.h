@@ -93,6 +93,21 @@ STATIC_ASSERT(sizeof(f64) == 8, "Expected f64 to be 8 byte");
 /** @} */
 
 /**
+ * @brief Clamp a value between a minimum and maximum.
+ *
+ * This macro ensures that `val` is never less than `min` and never greater than `max`.
+ * It is safe to use with integer and floating-point types.
+ *
+ * @param val The value to clamp.
+ * @param min The minimum allowed value.
+ * @param max The maximum allowed value.
+ *
+ * @return The clamped value: `min` if val < min, `max` if val > max, otherwise val.
+ */
+#define CLAMP(val, min, max) (((val) < (min)) ? (min) : (((val) > (max)) ? (max) : (val)))
+
+
+/**
  * @name Platform Detection
  * @brief Detects the target platform at compile-time and defines a macro accordingly.
  * @{

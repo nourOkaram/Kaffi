@@ -81,7 +81,12 @@
         "exception": "c",
         "intrin.h": "c",
         "xlocale": "c",
-        "xlocmon": "c"
+        "xlocmon": "c",
+        "charconv": "c",
+        "cstring": "c",
+        "vector": "c",
+        "algorithm": "c",
+        "limits": "c"
     },
 
     // Windows
