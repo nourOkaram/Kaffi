@@ -72,6 +72,6 @@ SET OUTPUT_DLL=%BIN_DIR%/%assembly%.dll
 REM --- Step 3: Compile all source files and link into the DLL ---
 ECHO Building %assembly%...
 
-clang %cFilenames% %compilerFlags% -o %OUTPUT_DLL% %defines% %includeFlags% %linkerFlags% >nul 2>&1
+clang %cFilenames% %compilerFlags% -o %OUTPUT_DLL% %defines% %includeFlags% %linkerFlags%
 REM Invoke clang with the collected source files and compiler/linker flags
 

@@ -86,7 +86,21 @@
         "cstring": "c",
         "vector": "c",
         "algorithm": "c",
-        "limits": "c"
+        "limits": "c",
+        "windows.h": "c",
+        "platform.h": "c",
+        "winnt.h": "c",
+        "stdlib.h": "c",
+        "iosfwd": "c",
+        "xlocbuf": "c",
+        "ios": "c",
+        "xiosbase": "c",
+        "iterator": "c",
+        "map": "c",
+        "set": "c",
+        "span": "c",
+        "xstring": "c",
+        "xtree": "c"
     },
 
     // Windows

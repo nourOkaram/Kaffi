@@ -7,6 +7,7 @@
 
 #include "logger.h"
 #include "asserts.h"
+#include "platform/platform.h"
 
 // TODO: These standard library includes are temporary and will be replaced
 // with platform-specific implementations.
@@ -54,10 +55,11 @@ void shutdown_logging() {
  */
 void log_output(log_level level, const char* message, ...) {
     const char* level_strings[6] = {"[FATAL]: ", "[ERROR]: ", "[WARN]: ", "[INFO]: ", "[DEBUG]: ", "[TRACE]: "};
-    // b8 is_error = level < 2;
+    b8 is_error = level < LOG_LEVEL_WARN;
 
     // Buffer for the final formatted message.
-    char out_message[32000];
+    const i32 msg_length = 32000;
+    char out_message[msg_length];
     memset(out_message, 0, sizeof(out_message));
 
     // If the buffer size is 1, there's no space for any content, 
@@ -83,9 +85,12 @@ void log_output(log_level level, const char* message, ...) {
     out_message[total_len] = '\n';
     out_message[total_len + 1] = '\0';
 
-    // TODO: This direct printf will be replaced with platform-specific output routines
-    // that can handle things like colored console output or writing to different streams.
-    printf("%s", out_message);
+    // Platform-specific output
+    if (is_error) {
+        platform_console_write_error(out_message, level);
+    } else {
+        platform_console_write(out_message, level);
+    }
 }
 
 
