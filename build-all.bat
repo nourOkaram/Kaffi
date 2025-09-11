@@ -8,8 +8,8 @@ REM Define WORKSPACE if not already defined
 IF NOT DEFINED WORKSPACE (
     SET "WORKSPACE=%~dp0"
     REM Remove trailing backslash if present using CALL
-    CALL IF "%%WORKSPACE:~-1%%"=="\" SET "WORKSPACE=%%WORKSPACE:~0,-1%%"
-    CALL IF "%%WORKSPACE:~-1%%"=="/" SET "WORKSPACE=%%WORKSPACE:~0,-1%%"
+    IF "!WORKSPACE:~-1!"=="\" SET "WORKSPACE=!WORKSPACE:~0,-1!"
+    IF "!WORKSPACE:~-1!"=="/" SET "WORKSPACE=!WORKSPACE:~0,-1!"
 )
 
 IF NOT DEFINED BIN_DIR SET "BIN_DIR=%WORKSPACE%\bin"
