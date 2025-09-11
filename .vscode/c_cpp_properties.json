@@ -10,6 +10,7 @@
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE",
+                "_DEFAULT_SOURCE",
                 "KEXPORT"
             ],
             "compilerPath": "/usr/bin/clang",
@@ -28,6 +29,7 @@
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE",
+                "_DEFAULT_SOURCE",
                 "KEXPORT"
             ],
             "windowsSdkVersion": "10.0.22621.0",

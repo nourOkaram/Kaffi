@@ -57,6 +57,7 @@ LRESULT CALLBACK win32_process_message(HWND hwnd, u32 msg, WPARAM w_param, LPARA
  * @param y The window's starting Y position. `i32` is used for the same reason as x.
  * @param width The desired client area width. `i32` is used for safer validation and to allow special values.
  * @param height The desired client area height. `i32` is used for safer validation against invalid inputs.
+ * @return `b8` TRUE on success, FALSE on failure.
  */
 b8 platform_startup (
     platform_state* plat_state,
@@ -70,7 +71,7 @@ b8 platform_startup (
     internal_state *state = (internal_state*) plat_state->internal_state;
 
     // Get a handle to the current application instance.
-    state->h_instance = GetModuleHandleA(0);
+    state->h_instance = GetModuleHandleA(NULL);
 
     // Setup and register the window class.
     WNDCLASSA wc;

@@ -39,9 +39,9 @@ int main(void)
         // Main application loop.
         // TODO: This should be driven by a variable to allow for a clean exit.
 
-        while (TRUE) {
-            // Process OS messages (e.g., input, window events).
-            platform_pump_messages(&state);
+        // Process OS messages (e.g., input, window events).
+        while (platform_pump_messages(&state)) {
+            
         }
     }
 

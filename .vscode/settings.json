@@ -100,7 +100,21 @@
         "set": "c",
         "span": "c",
         "xstring": "c",
-        "xtree": "c"
+        "xtree": "c",
+        "xlib-xcb.h": "c",
+        "xcb.h": "c",
+        "keysym.h": "c",
+        "keysymdef.h": "c",
+        "cstdlib": "c",
+        "memory_resource": "c",
+        "new": "c",
+        "time.h": "c",
+        "unistd.h": "c",
+        "xlib.h": "c",
+        "xkblib.h": "c",
+        "features.h": "c",
+        "types.h": "c",
+        "random": "c"
     },
 
     // Windows
