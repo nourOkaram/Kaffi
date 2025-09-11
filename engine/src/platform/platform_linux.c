@@ -41,6 +41,24 @@
 // For older, less precise sleep (usleep)
 #else
     #include <unistd.h> // usleep
+    #include <sys/syscall.h>
+
+    #ifndef CLOCK_MONOTONIC
+    #define CLOCK_MONOTONIC 1
+    #endif
+
+    typedef struct {
+        i64 tv_sec;
+        i64 tv_nsec;
+    } timespec_t;
+
+    static int clock_gettime(i32 clock_id, timespec_t *ts) {
+        i32 ret = syscall(SYS_clock_gettime, clock_id, ts);
+        if (ret != 0) {
+            return -1;
+        }
+        return 0;
+    }
 #endif
 
 
@@ -240,11 +258,15 @@ b8 platform_startup (
     return TRUE;
 }
 
+/**
+ * @brief Shuts down the platform layer and cleans up resources.
+ * @param plat_state A pointer to the platform state structure. `platform_state*` allows direct modification.
+ */
 void platform_shutdown(platform_state* plat_state) {
     // Cold-cast the void pointer to our known internal state type.
     internal_state *state = (internal_state*) plat_state->internal_state;
 
-    // Turn key repeats back on since this is global for the OS... just... now
+    // Turn key repeats back on. This is crucial as it's a global OS setting.
     XAutoRepeatOn(state->display);
 
     if (state->window)
@@ -254,9 +276,13 @@ void platform_shutdown(platform_state* plat_state) {
     }
 }
 
-
+/**
+ * @brief Pumps messages from the X server event queue.
+ * @param plat_state A pointer to the platform state structure. `platform_state*` provides access to the internal state.
+ * @return `b8` TRUE to continue running, FALSE to quit.
+ */
 b8 platform_pump_messages(platform_state* plat_state) {
-    // Cold-cast the void pointer to our known internal state type.
+    // Cold-cast the void pointer to our known internal state type..
     internal_state *state = (internal_state*) plat_state->internal_state;
 
     xcb_generic_event_t *event;
@@ -264,16 +290,11 @@ b8 platform_pump_messages(platform_state* plat_state) {
 
     b8 quit_flagged = FALSE; 
     
-    // Poll for events until null is returned
-
+    // Poll for events until the queue is empty.
     while ((event = xcb_poll_for_event(state->connection))) {
-
-        if (event == NULL)
-        {
-            break;
-        }
-
-        // Input events
+        
+        // The high bit of response_type indicates if the event was "sent" by another client.
+        // We mask it out to get the actual event type code.
         switch (event->response_type & ~0x80)
         {
             case XCB_KEY_PRESS:
@@ -297,78 +318,146 @@ b8 platform_pump_messages(platform_state* plat_state) {
             case XCB_CLIENT_MESSAGE: {
                 cm = (xcb_client_message_event_t*) event;
 
-                // Window close
+                // Window close event from the window manager
                 if (cm->data.data32[0] == state->wm_delete_win) {
                     quit_flagged = TRUE;
                 }
             }break;
 
             default:
-                // Something else
+                // Other events
                 break;
         }
 
+        // The event object is dynamically allocated by xcb_poll_for_event and must be freed.
         free(event);
     }
 
     return !quit_flagged;
 }
 
+
+/**
+ * @brief Allocates a block of memory.
+ * @param size The size of the block to allocate. `u64` for a large, non-negative size.
+ * @param aligned Unused in this implementation, but kept for API consistency.
+ * @return A void pointer to the allocated memory.
+ */
 void* platform_allocate(u64 size, b8 aligned) {
+     // Uses malloc from the standard ANSI C library for basic memory allocation.
     return malloc(size);
 }
 
 
+/**
+ * @brief Frees a block of memory.
+ * @param block A pointer to the memory block to free. `void*` for a generic pointer.
+ * @param aligned Unused in this implementation.
+ */
 void platform_free(void* block, b8 aligned) {
+    // Uses free from the standard ANSI C library.
     free(block);
 }
 
 
+/**
+ * @brief Zeros out a block of memory.
+ * @param block The memory block to zero. `void*` for a generic pointer.
+ * @param size The size of the block. `u64` for a large, non-negative size.
+ * @return A pointer to the memory block.
+ */
 void* platform_zero_memory(void* block, u64 size) {
+    // Uses memset from the standard ANSI C library for efficient memory filling.
     return memset(block, 0, size);
 }
 
 
+
+/**
+ * @brief Copies a block of memory.
+ * @param dest The destination pointer. `void*` for a generic pointer.
+ * @param source The source pointer. `const void*` to indicate the source is not modified.
+ * @param size The amount of memory to copy. `u64` for a large, non-negative size.
+ * @return A pointer to the destination.
+ */
 void* platform_copy_memory(void* dest, const void* source, u64 size) {
+    // Uses memcpy from the standard ANSI C library for fast memory copying.
     return memcpy(dest, source, size);
 }
 
 
+
+/**
+ * @brief Sets a block of memory to a specific value.
+ * @param dest The destination pointer. `void*` for a generic pointer.
+ * @param value The value to set. `i32` is used by the underlying memset function.
+ * @param size The amount of memory to set. `u64` for a large, non-negative size.
+ * @return A pointer to the destination.
+ */
 void* platform_set_memory(void* dest, i32 value, u64 size) {
+    // Uses memset from the standard ANSI C library.
     return memset(dest, value, size);
 }
 
 
 
+
+/**
+ * @brief Writes a message to the console with color.
+ * @param message The message to write. `const char*` for a read-only string.
+ * @param colour The color index. `u8` is a small, efficient type for an array index.
+ */
 void platform_console_write(const char* message, u8 colour) {
     // FATAL, ERROR, WARN, INFO, DEBUG, TRACE
     const char* colour_strings[] = {"0;41", "1;31", "1;33", "1;32", "1;34", "1;30"};
+
+
+    // Uses printf with ANSI escape codes to output colored text to the terminal.
+    // This is a standard feature on Linux and other Unix-like systems.
     printf("\033[%sm%s\033[0m", colour_strings[colour], message);
 }
 
 
+/**
+ * @brief Writes an error message to the console with color.
+ * @param message The message to write. `const char*` for a read-only string.
+ * @param colour The color index. `u8` is a small, efficient type for an array index.
+ */
 void platform_console_write_error(const char* message, u8 colour) {
     // FATAL, ERROR, WARN, INFO, DEBUG, TRACE
     const char* colour_strings[] = {"0;41", "1;31", "1;33", "1;32", "1;34", "1;30"};
+
+    // This function is identical to platform_console_write for Linux, as stdout and stderr
+    // typically go to the same terminal. It exists for API consistency.
     printf("\033[%sm%s\033[0m", colour_strings[colour], message);
 }
 
 
+/**
+ * @brief Gets the absolute time in seconds.
+ * @return `f64` The absolute time. `f64` provides high precision for timing.
+ */
 f64 platform_get_absolute_time() {
     struct timespec now;
+
+    // CLOCK_MONOTONIC provides a steadily increasing time that is not affected by system time changes.
     clock_gettime(CLOCK_MONOTONIC, &now);
+    
     return (f64)(now.tv_sec + now.tv_nsec * 0.000000001);
 }
 
 
 void platform_sleep(u64 ms) {
 
+// Use high-precision nanosleep if available (newer POSIX versions).
 #if _POSIX_C_SOURCE >= 199309L
     struct timespec ts;
     ts.tv_sec = ms / 1000;
     ts.tv_nsec = (ms % 1000) * 1000 * 1000;
     nanosleep(&ts, NULL);
 #else
+
+    // Fallback to older, less precise methods if nanosleep isn't available.
     if (ms >= 1000) {
         sleep(ms / 1000);
     }
