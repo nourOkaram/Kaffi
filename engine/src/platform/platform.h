@@ -38,7 +38,7 @@ typedef struct platform_state {
  * @param height The initial height of the window's client area.
  * @return b8 Returns TRUE on success, FALSE on failure.
  */
-KAPI b8 platform_startup (
+b8 platform_startup (
     platform_state* plat_state,
     const char* application_name,
     i32 x,
@@ -50,7 +50,7 @@ KAPI b8 platform_startup (
  * @brief Shuts down the platform layer and releases all resources.
  * @param plat_state A pointer to the platform_state structure.
  */
-KAPI void platform_shutdown(platform_state* plat_state);
+void platform_shutdown(platform_state* plat_state);
 
 /**
  * @brief Processes OS-specific messages and events.
@@ -61,7 +61,7 @@ KAPI void platform_shutdown(platform_state* plat_state);
  * @param plat_state A pointer to the platform_state structure.
  * @return b8 Returns TRUE if the application should continue running, FALSE otherwise.
  */
-KAPI b8 platform_pump_messages(platform_state* plat_state);
+b8 platform_pump_messages(platform_state* plat_state);
 
 /*
 ==================================
@@ -75,14 +75,14 @@ KAPI b8 platform_pump_messages(platform_state* plat_state);
  * @param aligned Indicates if the allocation should be aligned.
  * @return A pointer to the allocated memory block.
  */
-void* platform_allocate(u64 size, b8 aligned);
+KAPI void* platform_allocate(u64 size, b8 aligned);
 
 /**
  * @brief Frees a previously allocated block of memory.
  * @param block A pointer to the memory block to free.
  * @param aligned Indicates if the allocation was aligned.
  */
-void platform_free(void* block, b8 aligned);
+KAPI void platform_free(void* block, b8 aligned);
 
 /**
  * @brief Zeros out a block of memory.
@@ -155,7 +155,7 @@ f64 platform_get_absolute_time();
  *
  * This blocks the main thread. It should only be used for giving time
  * back to the OS when the application loop has spare time, to avoid
- * maxing out the CPU. This is not exported via the KAPI.
+ * maxing out the CPU.
  *
  * @param ms The number of milliseconds to sleep.
  */
