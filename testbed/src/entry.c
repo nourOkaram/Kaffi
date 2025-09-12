@@ -42,7 +42,7 @@ b8 create_game(game* out_game) {
 
     // Allocate memory for the game's state.
     // This is the only state the game itself needs to manage
-    out_game->state = platform_allocate(sizeof(game_state), FALSE);
+    out_game->state = kallocate(sizeof(game_state), MEMORY_TAG_GAME);
 
     // Return true to indicate success.
     return TRUE;

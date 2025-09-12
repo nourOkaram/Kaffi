@@ -118,7 +118,8 @@
         "game.h": "c",
         "game_types.h": "c",
         "application.h": "c",
-        "ctime": "c"
+        "ctime": "c",
+        "kmemory.h": "c"
     },
 
     // Windows

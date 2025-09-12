@@ -11,9 +11,10 @@
 #include "application.h"
 #include "game_types.h"
 
+#include "logger.h"
 
 #include "platform/platform.h"
-#include "logger.h"
+#include "core/kmemory.h"
 
 /**
  * @struct application_state
@@ -136,6 +137,9 @@ b8 application_create(game* game_inst) {
  * @return `b8 TRUE` on graceful shutdown, `b8 FALSE` on error.
  */
 b8 application_run() {
+    // Log memory usage at the start of the main loop for debugging.
+    KINFO(get_memory_usage_str());
+
     // Main game loop.
     while (app_state.is_running) {
 

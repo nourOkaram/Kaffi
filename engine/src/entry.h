@@ -4,13 +4,18 @@
  * @file entry.h
  * @brief This file contains the main entry point for the engine's executable.
  *
- * Its primary responsibility is to create a game instance by calling an
+ * @details Its primary responsibility is to create a game instance by calling an
  * externally defined function and then hand off control to the application layer.
+ * It also manages the lifecycle of core subsystems like memory.
+ *
+ * @note This file uses the standard `int main(void)` signature as defined by ANSI C
+ * to ensure maximum portability across different compilers and platforms.
  * @copyright Copyright (c) 2025
  */
 
 #include "core/application.h"
 #include "core/logger.h"
+#include "core/kmemory.h"
 #include "game_types.h"
 
 
@@ -25,11 +30,16 @@ extern b8 create_game(game* out_game);
 
 /**
  * @brief The main entry point of the application.
- * @return An integer representing the exit code. `int` is the standard (ANSI C)
- * return type for a process, where 0 typically indicates successful execution.
+ * @details This function orchestrates the entire application lifecycle: initializing
+ * core systems, creating the game, running the main loop, and shutting down.
+ * @return An integer representing the exit code. `int` is the standard return
+ * type for a process, where 0 typically indicates successful execution.
  */
 int main(void)
 {
+    // Initialize the memory subsystem first. No allocations should happen before this.
+    initialize_memory();
+
     // Request the game instance from the user-defined function. (startup step)
     game game_inst;
     if (!create_game(&game_inst)) {
@@ -56,6 +66,9 @@ int main(void)
         KINFO("Application did not shutdown gracefully!");
         return 2;
     };
+
+    // Shutdown the memory subsystem last to ensure all memory is tracked until the end.
+    shutdown_memory();
 
     // A return code of 0 indicates success.
     return 0;

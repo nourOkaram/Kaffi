@@ -75,14 +75,14 @@ b8 platform_pump_messages(platform_state* plat_state);
  * @param aligned Indicates if the allocation should be aligned.
  * @return A pointer to the allocated memory block.
  */
-KAPI void* platform_allocate(u64 size, b8 aligned);
+void* platform_allocate(u64 size, b8 aligned);
 
 /**
  * @brief Frees a previously allocated block of memory.
  * @param block A pointer to the memory block to free.
  * @param aligned Indicates if the allocation was aligned.
  */
-KAPI void platform_free(void* block, b8 aligned);
+void platform_free(void* block, b8 aligned);
 
 /**
  * @brief Zeros out a block of memory.
